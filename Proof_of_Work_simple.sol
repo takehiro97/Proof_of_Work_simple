@@ -8,6 +8,9 @@ contract SimpleBank{
     //deposit関数は、スマートコントラクトにユーザーからETHを預け入れるための関数
     function deposit() public payable{
         balances[msg.sender] += msg.value;
+
+        // deposit関数の履歴を残す関数
+        emit Deposit(msg.sender, msg.value);
     }
 
     /*
@@ -22,6 +25,9 @@ contract SimpleBank{
         // payableで送金可能なアドレス型に変換し、callでETHを送る
         (bool success,) = payable(msg.sender).call{value: amount}("");
         require(success, "Withdraw failed"); //送金成功チェック
+        
+        // withdraw関数の履歴を残す関数
+        emit Withdraw(msg.sender, amount);
     }
 
     // transfer関数はETHを送る関数
@@ -34,6 +40,9 @@ contract SimpleBank{
         
         //相手の残高に加える
         balances[to] += amount;
+
+        //transfer関数の履歴を残す関数
+        emit Transfer(msg.sender, to, amount);
     }
 
     //残高を確認する関数

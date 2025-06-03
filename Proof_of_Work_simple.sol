@@ -22,6 +22,23 @@ contract SimpleBank{
         // payableで送金可能なアドレス型に変換し、callでETHを送る
         (bool success,) = payable(msg.sender).call{value: amount}("");
         require(success, "Withdraw failed"); //送金成功チェック
-
     }
+
+    // transfer関数はETHを送る関数
+    function transfer(address to, uint amount) public{
+        //残高が足りてるかチェック
+        require(balances[msg.sender] >= amount, "Not enought balance");
+        
+        //自分の残高から引く
+        balance[msg.sender] -= amount;
+        
+        //相手の残高に加える
+        balances[to] += amount;
+    }
+
+    //残高を確認する関数
+    function getBalance() external view return (uint){
+        return balances[msg.sender];
+    }
+    
 }

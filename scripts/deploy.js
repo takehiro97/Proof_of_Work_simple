@@ -7,4 +7,12 @@ async function main(){
     const bank = await Bank.deploy();
     await bank.deployed();
     console.log("Deployed to:", bank.address);
+
+    //mainを実行してエラーが出たら表示する
+
 }
+
+main().catch((error) => {
+    console.error(error);
+    process.exitCode = 1;
+});

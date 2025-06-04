@@ -4,6 +4,9 @@ pragma solidity ^0.8.0;
 contract SimpleBank{
     //mappingはキーと値のペアを保存するデータ構造の関数
     mapping (address => uint) balances;
+
+    //オーナーだけが設定できるアドレス
+    address public owner;
     
     //deposit関数は、スマートコントラクトにユーザーからETHを預け入れるための関数
     function deposit() public payable{
@@ -49,5 +52,7 @@ contract SimpleBank{
     function getBalance() external view return (uint){
         return balances[msg.sender];
     }
+
+    
     
 }

@@ -5,6 +5,11 @@ contract SimpleBank{
     //mappingはキーと値のペアを保存するデータ構造の関数
     mapping (address => uint) balances;
 
+    //イベント定義
+    event Deposit(address indexed user, uint amount);
+    event Withdraw(address indexed user, uint amount);
+    event Transfer(address indexed from, address indexed to,uint amount);
+
     //オーナーだけが設定できるアドレス
     address public owner;
     
@@ -39,7 +44,7 @@ contract SimpleBank{
         require(balances[msg.sender] >= amount, "Not enought balance");
         
         //自分の残高から引く
-        balance[msg.sender] -= amount;
+        balances[msg.sender] -= amount;
         
         //相手の残高に加える
         balances[to] += amount;
@@ -49,7 +54,7 @@ contract SimpleBank{
     }
 
     //残高を確認する関数
-    function getBalance() external view return (uint){
+    function getBalance() external view returns (uint){
         return balances[msg.sender];
     }
 

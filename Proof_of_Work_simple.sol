@@ -2,6 +2,9 @@
 pragma solidity ^0.8.0;
 
 contract SimpleBank{
+    //オーナーだけが設定できるアドレス
+    address public owner;
+
     //mappingはキーと値のペアを保存するデータ構造の関数
     mapping (address => uint) balances;
 
@@ -10,8 +13,10 @@ contract SimpleBank{
     event Withdraw(address indexed user, uint amount);
     event Transfer(address indexed from, address indexed to,uint amount);
 
-    //オーナーだけが設定できるアドレス
-    address public owner;
+    //送信者がオーナーか判断する機能
+    modifier onlyOwner(){
+        require(msg.sender == owner, "Not the owner");
+    }
     
     //deposit関数は、スマートコントラクトにユーザーからETHを預け入れるための関数
     function deposit() public payable{
@@ -58,6 +63,6 @@ contract SimpleBank{
         return balances[msg.sender];
     }
 
-    
+    modifier
     
 }

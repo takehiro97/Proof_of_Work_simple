@@ -7,15 +7,39 @@ contract SimpleBank{
 
     //mappingはキーと値のペアを保存するデータ構造の関数
     mapping (address => uint) balances;
+    
+    //ロックされるアカウントのmapping作成
+    mapping(address => bool) private lockedAccounts;
 
     //イベント定義
     event Deposit(address indexed user, uint amount);
     event Withdraw(address indexed user, uint amount);
     event Transfer(address indexed from, address indexed to,uint amount);
+    event AccountLocked(address indexed user);
+    event AccountUnlocked(address indexed user);
 
     //送信者がオーナーか判断する機能
     modifier onlyOwner(){
         require(msg.sender == owner, "Not the owner");
+        _;
+    }
+
+    //口座がロックされてるか判断する機能
+    modifier notLocked(){
+        require(!lockedAccounts[msg.sender],"Account is locked");
+        _;
+    }
+
+    //アカウントをロックする機能
+    function lockAccount(address user)external onlyOwner{
+        lockedAccounts[user] = true;
+        emit AccountLocked(user);
+    }
+
+    //アカウントをアンロックする機能
+    function unlockAccount(address user) external onlyOwner{
+        lockedAccounts[user] = false;
+        emit AccountUnlocked(user);
     }
     
     //deposit関数は、スマートコントラクトにユーザーからETHを預け入れるための関数
@@ -62,7 +86,5 @@ contract SimpleBank{
     function getBalance() external view returns (uint){
         return balances[msg.sender];
     }
-
-    modifier
     
 }

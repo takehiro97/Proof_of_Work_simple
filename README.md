@@ -21,11 +21,13 @@ SimpleBank is a smart contract that allows users to:
 
 ## 📂 Project Structure
 
+```
 contracts/
 ├── Proof_of_Work_simple.sol
 ├──scripts/
 │  └── deploy.js
 └──README.md
+```
 
 ## 🚀 How to Deploy
 
